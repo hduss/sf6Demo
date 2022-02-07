@@ -11,10 +11,11 @@ class AuthenticationApi
     private $client;
 
 
-    // public function __construct(HttpClientInterface $client)
-    // {
-    //     $this->client = $client;
-    // }
+    public function __construct(HttpClientInterface $client)
+    {
+        $this->client = $client;
+        // return $this;
+    }
 
 
     public function fetchGitHubInformation(): array
@@ -65,14 +66,14 @@ class AuthenticationApi
         return $messages[$index];
     }
 
-    public function authenticateHttp(HttpClientInterface $client): Array
+    public function getTrends(): Array
     {
 
-        $url = "https://api.themoviedb.org/3/movie/latest?api_key=2ce2eade1f564ac11d6aa762b7af299a&language=fr-FR";
+        $url = "https://api.themoviedb.org/3/trending/movie/day?api_key=2ce2eade1f564ac11d6aa762b7af299a";
         $authV4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2UyZWFkZTFmNTY0YWMxMWQ2YWE3NjJiN2FmMjk5YSIsInN1YiI6IjYyMDAyZDhjYTg4NTg3MDEwZDI1MjcxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6f-R0_fPO97I8B8cLmfY7-Rd0zG_MVlFKuOePBfn1MQ";
 
         // you can add request options (or override global ones) using the 3rd argument
-        $response = $client->request('GET', $url, [
+        $response = $this->client->request('GET', $url, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $authV4,        
                 'Content-Type' => 'application/json;charset=utf-8'
@@ -82,6 +83,26 @@ class AuthenticationApi
         $content = $response->getContent();
         $content = $response->toArray();
         // var_dump($content);
+
+        return $content;
+    }
+
+    public function getDetails($id): Array
+    {
+
+        $url = "https://api.themoviedb.org/3/movie/" . $id . "?api_key=2ce2eade1f564ac11d6aa762b7af299a&language=en-US";
+        $authV4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2UyZWFkZTFmNTY0YWMxMWQ2YWE3NjJiN2FmMjk5YSIsInN1YiI6IjYyMDAyZDhjYTg4NTg3MDEwZDI1MjcxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6f-R0_fPO97I8B8cLmfY7-Rd0zG_MVlFKuOePBfn1MQ";
+
+        // you can add request options (or override global ones) using the 3rd argument
+        $response = $this->client->request('GET', $url, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $authV4,        
+                'Content-Type' => 'application/json;charset=utf-8'
+            ]
+        ]);
+
+        $content = $response->toArray();
+
 
         return $content;
     }

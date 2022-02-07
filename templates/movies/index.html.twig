@@ -1,0 +1,20 @@
+
+<section style="width: 85%; margin-right: auto; margin-left: auto;">
+
+    <div style="display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;">
+        {% for movie in last_trends %}
+        <div>
+            <h2 style="font-size: 12px;">
+                <a href="{{ path('movie_detail', {id: movie.id})}}">{{ movie.original_title }} ({{movie.vote_average}})</a>
+            </h2>
+
+            <img src="{{path_img}}{{movie.poster_path}}" style="border-radius: 15px;">
+        </div>
+            {# <p>{{ post.excerpt }}</p> #}
+        {% endfor %}
+    </div>
+</section>

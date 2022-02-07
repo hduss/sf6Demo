@@ -36,13 +36,41 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/movies/trend")
+     * @Route("/movies/trends")
      */
-    public function getTrendMovies(): Response
+    public function getTrendMovies(AuthenticationApi $authenticationApi, HttpClientInterface $client): Response
     {
-        
 
-        return new Response('Je suis trend movies');
+        $pathImg = "https://www.themoviedb.org/t/p/w220_and_h330_face/";
+        $test = new $authenticationApi($client);
+        $trends = $authenticationApi->getTrends();
+        $latsTrends = array_slice($trends['results'], 0, 20);
+        echo '<pre>';
+        var_dump($latsTrends);
+        echo '</pre>';
+        return $this->render('movies/index.html.twig', ['last_trends' => $latsTrends, 'path_img' => $pathImg]);
+
+        // return new Response('Je suis trend movies');
+    }
+
+    /**
+     * @Route("/movies/detail/{id}", name="movie_detail")
+     */
+    public function getMovieDetail(int $id, AuthenticationApi $authenticationApi, HttpClientInterface $client): Response
+    {
+        var_dump($id);
+
+        $test = new $authenticationApi($client);
+        $detail = $authenticationApi->getDetails($id);
+
+        // echo '<pre>';
+        // var_dump($detail);
+        // echo '</pre>';
+
+        return $this->render('movies/detail.html.twig', ['detail' => $detail]);
+
+        // return new Response('Je suis une response');
+
     }
 
 }
