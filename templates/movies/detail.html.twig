@@ -1,7 +1,66 @@
 
+{% extends 'base.html.twig' %}
 
-{{ detail.adult }}
-{{ detail.budget}}
-{# {% for d in detail %}
-    {{d}}
-{% endfor %} #}
+{% block title %} Details {% endblock %}
+
+{% block body %}
+    <section style="width: 85%; margin-right: auto; margin-left: auto;">
+    <div style="display: flex;
+    flex-direction: row;">
+        <div>
+            <img src="{{path_img}}{{detail.poster_path}}" style="border-radius: 15px;">
+        </div>
+        <div style="margin-left: 25px; margin-left: 25px;
+        border: 1px solid #f1eeee;
+        padding: 15px;
+        border-radius: 25px;">
+            <div>
+                <div>
+                    <h2>
+                        {{detail.original_title}}
+                    </h2>
+                </div>
+                <div>
+                    <p>Release date : {{detail.release_date}}</p>
+                </div>
+                <div>
+                    {% for genres in detail.genres %}
+                    <span>{{ genres.name }} {{ (not loop.first and not loop.last) ? ',' : '' }}</span>
+                    {% endfor %}
+
+                </div>
+                <div>
+                    <p>Production companies : </p>
+                    {% for production_companies in detail.production_companies %}
+                        <span>{{ production_companies.name }} {{ (not loop.first and not loop.last) ? ',' : '' }}</span>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <p>{{detail.overview}}</p>
+                </div> 
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                <div>
+                    <a href="">
+                        <div>
+                            <p>Add to list</p>
+                        </div>
+                    </a>
+                </div>
+                <div>
+                    <a href="">
+                        <div>
+                            <p>Like</p>
+                        </div>
+                    </a>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+</section>
+{% endblock %}
+

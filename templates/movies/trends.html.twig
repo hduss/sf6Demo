@@ -1,5 +1,9 @@
+{% extends 'base.html.twig' %}
 
-<section style="width: 85%; margin-right: auto; margin-left: auto;">
+{% block title %} Trends {% endblock %}
+
+{% block body %}
+    <section style="width: 85%; margin-right: auto; margin-left: auto;">
 
     <div style="display: flex;
         flex-direction: row;
@@ -18,3 +22,5 @@
         {% endfor %}
     </div>
 </section>
+{% endblock %}
+

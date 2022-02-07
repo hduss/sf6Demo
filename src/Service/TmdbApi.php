@@ -1,24 +1,38 @@
 <?php
-// src/Service/MessageGenerator.php
+
 namespace App\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use GuzzleHttp\Client;
 
-class AuthenticationApi
+
+class TmdbApi
 {
 
     private $client;
+    private $apiKey;
+    private $authV4;
+    private $pathImg;
 
 
     public function __construct(HttpClientInterface $client)
     {
         $this->client = $client;
+        // @todo : Add apikey & authV4 in config
+        $this->apiKey = "2ce2eade1f564ac11d6aa762b7af299a";
+        $this->authV4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2UyZWFkZTFmNTY0YWMxMWQ2YWE3NjJiN2FmMjk5YSIsInN1YiI6IjYyMDAyZDhjYTg4NTg3MDEwZDI1MjcxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6f-R0_fPO97I8B8cLmfY7-Rd0zG_MVlFKuOePBfn1MQ";
+        $this->pathImg = "https://www.themoviedb.org/t/p/w220_and_h330_face/";
+        $this->headers = 
+        [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->authV4,        
+                'Content-Type' => 'application/json;charset=utf-8'
+            ]
+        ];
         // return $this;
     }
 
 
-    public function fetchGitHubInformation(): array
+    public function fetchGitHubInformation(): Array
     {
         $response = $this->client->request(
             'GET',
@@ -38,7 +52,7 @@ class AuthenticationApi
     }
 
 
-    public function authenticate(): string
+    private function authenticate(): string
     {
 
         $apiKey = "2ce2eade1f564ac11d6aa762b7af299a";
@@ -68,19 +82,8 @@ class AuthenticationApi
 
     public function getTrends(): Array
     {
-
         $url = "https://api.themoviedb.org/3/trending/movie/day?api_key=2ce2eade1f564ac11d6aa762b7af299a";
-        $authV4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2UyZWFkZTFmNTY0YWMxMWQ2YWE3NjJiN2FmMjk5YSIsInN1YiI6IjYyMDAyZDhjYTg4NTg3MDEwZDI1MjcxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6f-R0_fPO97I8B8cLmfY7-Rd0zG_MVlFKuOePBfn1MQ";
-
-        // you can add request options (or override global ones) using the 3rd argument
-        $response = $this->client->request('GET', $url, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $authV4,        
-                'Content-Type' => 'application/json;charset=utf-8'
-            ]
-        ]);
-
-        $content = $response->getContent();
+        $response = $this->client->request('GET', $url, $this->headers);
         $content = $response->toArray();
         // var_dump($content);
 
@@ -89,20 +92,9 @@ class AuthenticationApi
 
     public function getDetails($id): Array
     {
-
-        $url = "https://api.themoviedb.org/3/movie/" . $id . "?api_key=2ce2eade1f564ac11d6aa762b7af299a&language=en-US";
-        $authV4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2UyZWFkZTFmNTY0YWMxMWQ2YWE3NjJiN2FmMjk5YSIsInN1YiI6IjYyMDAyZDhjYTg4NTg3MDEwZDI1MjcxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6f-R0_fPO97I8B8cLmfY7-Rd0zG_MVlFKuOePBfn1MQ";
-
-        // you can add request options (or override global ones) using the 3rd argument
-        $response = $this->client->request('GET', $url, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $authV4,        
-                'Content-Type' => 'application/json;charset=utf-8'
-            ]
-        ]);
-
+        $url = "https://api.themoviedb.org/3/movie/" . $id . "?api_key=" . $this->apiKey . "=en-US";
+        $response = $this->client->request('GET', $url, $this->headers);
         $content = $response->toArray();
-
 
         return $content;
     }
