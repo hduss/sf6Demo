@@ -30,7 +30,7 @@
 
                 </div>
                 <div>
-                    <p>Production companies : </p>
+                    <span>Production companies : </span>
                     {% for production_companies in detail.production_companies %}
                         <span>{{ production_companies.name }} {{ (not loop.first and not loop.last) ? ',' : '' }}</span>
                     {% endfor %}
