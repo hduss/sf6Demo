@@ -19,6 +19,11 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    
+parameters:
+    TMDB_API_KEY: '%env(TMDB_API_KEY)%'
+    TMDB_AUTH_V4: '%env(TMDB_AUTH_V4)%'
+    your_json: '%env(json:YOUR_JSON)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

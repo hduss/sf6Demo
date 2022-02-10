@@ -18,8 +18,8 @@ class TmdbApi
     {
         $this->client = $client;
         // @todo : Add apikey & authV4 in config
-        $this->apiKey = "2ce2eade1f564ac11d6aa762b7af299a";
-        $this->authV4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyY2UyZWFkZTFmNTY0YWMxMWQ2YWE3NjJiN2FmMjk5YSIsInN1YiI6IjYyMDAyZDhjYTg4NTg3MDEwZDI1MjcxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.6f-R0_fPO97I8B8cLmfY7-Rd0zG_MVlFKuOePBfn1MQ";
+        $this->apiKey = $this->getParameter('TMDB_API_KEY');
+        $this->authV4 = $this->getParameter('TMDB_AUTH_V4');
         $this->pathImg = "https://www.themoviedb.org/t/p/w220_and_h330_face/";
         $this->headers = 
         [
@@ -80,9 +80,18 @@ class TmdbApi
         return $messages[$index];
     }
 
+    public function getLatest(): Array
+    {
+        $url = "https://api.themoviedb.org/3/movie/latest?api_key=" . $this->apiKey . "&language=en-US";
+        $response = $this->client->request('GET', $url, $this->headers);
+        $content = $response->toArray();
+
+        return $content;
+    }
+
     public function getTrends(): Array
     {
-        $url = "https://api.themoviedb.org/3/trending/movie/day?api_key=2ce2eade1f564ac11d6aa762b7af299a";
+        $url = "https://api.themoviedb.org/3/trending/movie/day?api_key=" . $this->apiKey;
         $response = $this->client->request('GET', $url, $this->headers);
         $content = $response->toArray();
         // var_dump($content);
@@ -97,5 +106,16 @@ class TmdbApi
         $content = $response->toArray();
 
         return $content;
+    }
+
+    public function getTrendsTv(): Array
+    {
+        $url = "https://api.themoviedb.org/3/trending/tv/day?api_key=" . $this->apiKey;
+        $response = $this->client->request('GET', $url, $this->headers);
+        $content = $response->toArray();
+        // var_dump($content);
+
+        return $content;
+
     }
 }

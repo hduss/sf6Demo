@@ -35,8 +35,8 @@ class HomeController extends AbstractController
      */
     public function getLatestMovies(TmdbApi $tmdbApi, HttpClientInterface $client): Response
     {
-        $authApi = $tmdbApi->authenticateHttp($client);
-        var_dump($authApi);
+        $latest = $tmdbApi->getLatest();
+        var_dump($latest);
 
         return new Response('Je suis latest movies');
     }
@@ -47,13 +47,9 @@ class HomeController extends AbstractController
      */
     public function getTrendMovies(TmdbApi $tmdbApi, HttpClientInterface $client): Response
     {
-
-        $test = new $tmdbApi($client);
         $trends = $tmdbApi->getTrends();
         $latsTrends = array_slice($trends['results'], 0, 20);
-        // echo '<pre>';
-        // var_dump($latsTrends);
-        // echo '</pre>';
+
         return $this->render('movies/trends.html.twig', ['last_trends' => $latsTrends, 'path_img' => $this->pathImg]);
     }
 
@@ -63,16 +59,20 @@ class HomeController extends AbstractController
      */
     public function getMovieDetail(int $id, TmdbApi $tmdbApi, HttpClientInterface $client): Response
     {
-
-        $test = new $tmdbApi($client);
         $detail = $tmdbApi->getDetails($id);
 
-        echo '<pre>';
-        var_dump($detail);
-        echo '</pre>';
-
-
         return $this->render('movies/detail.html.twig', ['detail' => $detail, 'path_img' => $this->pathImg]);
+    }
+
+    /**
+     * @Route("/tv/trends", name="tv_trends")
+     */
+    public function getTrendsTv(TmdbApi $tmdbApi, HttpClientInterface $client): Response
+    {
+        $trendsTv = $tmdbApi->getTrendsTv();
+        var_dump($trendsTv);
+
+        return new Response("Je suis getTrends");
     }
 
 }
