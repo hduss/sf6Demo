@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.TMDB_API_KEY: '%env(TMDB_API_KEY)%'
+    app.TMDB_AUTH_V4: '%env(TMDB_AUTH_V4)%'
 
 services:
     # default configuration for services in *this* file
@@ -11,6 +13,9 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    App\Service\TmdbApi:
+        arguments:
+            $contentsDir: '%app.TMDB_API_KEY%'
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -20,10 +25,5 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
     
-parameters:
-    TMDB_API_KEY: '%env(TMDB_API_KEY)%'
-    TMDB_AUTH_V4: '%env(TMDB_AUTH_V4)%'
-    your_json: '%env(json:YOUR_JSON)%'
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

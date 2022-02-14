@@ -24,6 +24,9 @@ class HomeController extends AbstractController
     {
         $number = random_int(0, 100);
 
+        var_dump($this->getParameter('app.TMDB_API_KEY'));
+
+
         return $this->render('index.html.twig', [
             'number' => $number,
         ]);
@@ -45,7 +48,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/movies/trends", name="movies_trends")
      */
-    public function getTrendMovies(TmdbApi $tmdbApi, HttpClientInterface $client): Response
+    public function getTrendMovies(TmdbApi $tmdbApi): Response
     {
         $trends = $tmdbApi->getTrends();
         $latsTrends = array_slice($trends['results'], 0, 20);
@@ -57,7 +60,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/movies/detail/{id}", name="movie_detail")
      */
-    public function getMovieDetail(int $id, TmdbApi $tmdbApi, HttpClientInterface $client): Response
+    public function getMovieDetail(int $id, TmdbApi $tmdbApi): Response
     {
         $detail = $tmdbApi->getDetails($id);
 
@@ -67,7 +70,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/tv/trends", name="tv_trends")
      */
-    public function getTrendsTv(TmdbApi $tmdbApi, HttpClientInterface $client): Response
+    public function getTrendsTv(TmdbApi $tmdbApi): Response
     {
         $trendsTv = $tmdbApi->getTrendsTv();
         var_dump($trendsTv);
