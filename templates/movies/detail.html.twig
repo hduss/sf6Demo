@@ -65,6 +65,21 @@
 {% endblock %}
 
 {% block js %}
-    <script src="{{ asset('/js/test.js') }}"></script>
+    {# <script src="./public/js/test.js"></script> #}
+    <script>
+        console.log('Je suis la');
+
+        async function addInLisdt(){
+            let response = await fetch('/api/addlist')
+            return response;
+        }
+
+        //@todo: Add click on link
+        addInLisdt()
+        .then( response => response.json())
+        .then(data => {
+            console.log(data);
+        });
+    </script>
 {% endblock %}
 

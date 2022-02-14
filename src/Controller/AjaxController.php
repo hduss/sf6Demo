@@ -17,7 +17,7 @@ Class AjaxController extends AbstractController
      */
     public function addInList(): Response
     {
-        return new Response('Je suis la');
+        return $this->json(['username' => 'jane.doe']);
     }
 
     /**
